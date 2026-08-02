@@ -28,7 +28,7 @@ class GeminiPromptExpansionService : PromptExpansionService {
         .build()
 
     private val endpoint =
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent"
 
     override suspend fun expandPrompt(shortPrompt: String, photoBytes: ByteArray?): PromptExpansionResult {
         val apiKey = BuildConfig.GEMINI_API_KEY
