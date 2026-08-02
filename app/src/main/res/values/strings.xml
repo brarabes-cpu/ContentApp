@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ContentApp</string>
+    <string name="app_banner_title">MyApp</string>
+
+    <string name="prompt_label">Что хочу</string>
+    <string name="prompt_placeholder">например: собачка на траве</string>
+    <string name="confirm_label">Я правильно поняла?</string>
+    <string name="btn_as_i_want">Сделать как я хочу</string>
+    <string name="btn_as_you_understood">Сделать как ты поняла</string>
+    <string name="btn_save">Сохранить</string>
+    <string name="btn_new_request">Новый запрос</string>
+    <string name="loading_title">Создаём результат…</string>
+    <string name="loading_subtitle">Это займёт немного времени</string>
+</resources>

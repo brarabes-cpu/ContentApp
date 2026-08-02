@@ -1,0 +1,37 @@
+<svg viewBox="0 0 400 830" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="400" height="830" fill="#ffffff" stroke="#000" stroke-width="2"/>
+
+  <text x="200" y="35" font-size="13" text-anchor="middle" fill="#999">Незарегистрированный пользователь</text>
+
+  <!-- Полный текст промта наверху -->
+  <rect x="20" y="50" width="360" height="80" rx="10" fill="#f2f2f2" stroke="#ddd" stroke-width="1"/>
+  <text x="36" y="72" font-size="10.5" fill="#666">Собака породы лабрадор бежит по зелёной</text>
+  <text x="36" y="87" font-size="10.5" fill="#666">траве, ясный день, солнце, лёгкие облака</text>
+  <text x="36" y="102" font-size="10.5" fill="#666">на голубом небе</text>
+  <text x="360" y="118" font-size="11" text-anchor="end" fill="#3a7bd5">Изменить</text>
+
+  <!-- Заголовок результата -->
+  <text x="200" y="155" font-size="18" text-anchor="middle" fill="#333" font-weight="bold">Готово!</text>
+
+  <!-- Карточка результата -->
+  <rect x="30" y="172" width="340" height="300" rx="14" fill="#eef6ff"/>
+  <rect x="45" y="187" width="310" height="240" rx="8" fill="#d8e8fb"/>
+  <text x="200" y="310" font-size="12" text-anchor="middle" fill="#7aa8d8">[ изображение результата ]</text>
+  <text x="200" y="315" font-size="20" text-anchor="middle" fill="#ffffff" opacity="0.55" transform="rotate(-25 200 315)">ЛОГОТИП</text>
+  <text x="200" y="452" font-size="11" text-anchor="middle" fill="#888">Превью с водяным знаком</text>
+
+  <!-- Кнопки -->
+  <rect x="30" y="487" width="160" height="48" rx="10" fill="#333"/>
+  <text x="110" y="516" font-size="12" text-anchor="middle" fill="#fff">Сохранить</text>
+  <rect x="210" y="487" width="160" height="48" rx="10" fill="none" stroke="#555" stroke-width="1.5"/>
+  <text x="290" y="516" font-size="12" text-anchor="middle" fill="#333">Новый запрос</text>
+
+  <!-- Плашка апгрейда — видна -->
+  <rect x="20" y="557" width="360" height="55" rx="6" fill="#fff8e1" stroke="#c9a227" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="200" y="580" font-size="11" text-anchor="middle" fill="#7a5c00">Для улучшения качества,</text>
+  <text x="200" y="596" font-size="11" text-anchor="middle" fill="#7a5c00">необходимо зарегистрироваться</text>
+
+  <!-- Кнопка "Войти" -->
+  <rect x="100" y="632" width="200" height="40" rx="8" fill="#3a7bd5"/>
+  <text x="200" y="657" font-size="13" text-anchor="middle" fill="#fff" font-weight="bold">Войти</text>
+</svg>

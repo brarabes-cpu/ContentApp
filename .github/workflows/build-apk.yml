@@ -1,0 +1,46 @@
+name: Build debug APK
+
+# Ручной запуск (кнопка "Run workflow" на вкладке Actions) и автоматически
+# при пуше в main. В проекте нет закоммиченного Gradle wrapper (gradlew),
+# поэтому Gradle и Android SDK ставятся самими экшенами ниже — ничего
+# скачивать вручную не нужно.
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout репозитория
+        uses: actions/checkout@v4
+
+      - name: Установить JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Установить Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Установить Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Создать local.properties (GEMINI_API_KEY из секретов репозитория)
+        run: |
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > local.properties
+
+      - name: Собрать debug APK
+        run: gradle assembleDebug --stacktrace
+
+      - name: Загрузить APK как артефакт сборки
+        uses: actions/upload-artifact@v4
+        with:
+          name: ContentApp-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error

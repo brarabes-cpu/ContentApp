@@ -1,0 +1,36 @@
+<svg viewBox="0 0 400 750" xmlns="http://www.w3.org/2000/svg" font-family="Roboto, Arial, sans-serif">
+  <rect width="400" height="750" fill="#FFFBFE"/>
+
+  <text x="200" y="55" font-size="20" text-anchor="middle" fill="#1C1B1F" font-weight="bold">Что хочу</text>
+
+  <!-- Поле ввода промта -->
+  <rect x="25" y="65" width="230" height="65" rx="16" fill="#EEF2FE" stroke="#5B8DEF" stroke-width="1"/>
+  <text x="40" y="102" font-size="11" fill="#7C89A6">например: собачка на траве</text>
+
+  <!-- Кнопка-скрепка — тот же размер и стиль, что кнопка Enter -->
+  <rect x="263" y="65" width="54" height="65" rx="16" fill="#5B8DEF"/>
+  <path d="M 283 84 L 283 103 a 6 6 0 0 0 12 0 L 295 81 a 4 4 0 0 0 -8 0 L 287 100"
+        stroke="#ffffff" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+  <!-- Кнопка Enter — одинаковый размер и стиль -->
+  <rect x="321" y="65" width="54" height="65" rx="16" fill="#5B8DEF"/>
+  <text x="348" y="102" font-size="14" text-anchor="middle" fill="#fff">➜</text>
+
+  <text x="200" y="195" font-size="19" text-anchor="middle" fill="#1C1B1F" font-weight="bold">Я правильно поняла?</text>
+  <rect x="25" y="208" width="350" height="70" rx="16" fill="#EEF2FE" stroke="#5B8DEF" stroke-width="1"/>
+  <text x="42" y="228" font-size="10" fill="#49454F">Собака породы лабрадор бежит по</text>
+  <text x="42" y="242" font-size="10" fill="#49454F">зелёной траве, ясный день, солнце...</text>
+
+  <rect x="25" y="295" width="165" height="55" rx="16" fill="#5B8DEF"/>
+  <text x="107" y="328" font-size="12" text-anchor="middle" fill="#fff" font-weight="bold">Сделать как я хочу</text>
+
+  <rect x="210" y="295" width="165" height="55" rx="16" fill="#5B8DEF"/>
+  <text x="292" y="328" font-size="12" text-anchor="middle" fill="#fff" font-weight="bold">Сделать как ты поняла</text>
+
+  <rect x="20" y="640" width="360" height="55" rx="12" fill="#FFF8E1" stroke="#E6C260" stroke-width="1"/>
+  <text x="200" y="663" font-size="11.5" text-anchor="middle" fill="#7A5C00">Для улучшения качества,</text>
+  <text x="200" y="679" font-size="11.5" text-anchor="middle" fill="#7A5C00">необходимо зарегистрироваться</text>
+
+  <rect x="90" y="705" width="220" height="40" rx="16" fill="#5B8DEF"/>
+  <text x="200" y="730" font-size="14" text-anchor="middle" fill="#fff" font-weight="bold">Войти</text>
+</svg>

@@ -1,0 +1,6 @@
+# Скопируйте этот файл в local.properties (без .example) и впишите свой ключ.
+# local.properties НЕ должен попадать в git — добавьте его в .gitignore.
+#
+# Получить бесплатный ключ Gemini API: https://aistudio.google.com/apikey
+# (без карты, free tier: Gemini 2.5 Flash — 60 запросов/мин, поддержка текста и фото на входе)
+GEMINI_API_KEY=вставьте_сюда_свой_ключ

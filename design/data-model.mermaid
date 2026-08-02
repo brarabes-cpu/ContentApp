@@ -1,0 +1,48 @@
+erDiagram
+    USER ||--o{ USER_UPLOAD : "загружает"
+    USER ||--o{ ORDER : "оформляет"
+    CONTENT_ITEM ||--o{ ORDER : "заказывается в"
+    USER_UPLOAD ||--o{ ORDER : "прикладывается к"
+    ORDER ||--|| PAYMENT_TRANSACTION : "оплачивается через"
+
+    USER {
+        string id
+        string email_or_phone
+        datetime registered_at
+        string status "гость / зарегистрирован"
+    }
+
+    CONTENT_ITEM {
+        string id
+        string title
+        string preview_url
+        string full_content_url
+        decimal price
+        string category
+        boolean is_free
+    }
+
+    USER_UPLOAD {
+        string id
+        string user_id
+        string photo_url
+        string prompt_text
+        datetime created_at
+    }
+
+    ORDER {
+        string id
+        string user_id
+        string content_item_id
+        string upload_id
+        string status "pending / paid / failed"
+        datetime created_at
+    }
+
+    PAYMENT_TRANSACTION {
+        string id
+        string order_id
+        string google_play_transaction_id
+        string status
+        decimal amount
+    }
