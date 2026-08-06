@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GigaChat API (gigachat.devices.sberbank.ru, ngw.devices.sberbank.ru) использует TLS-
+  сертификаты, выпущенные НУЦ Минцифры — их нет в стандартных хранилищах (Android, Mozilla,
+  Apple), поэтому без явного доверия соединение обрывается на этапе проверки сертификата.
+
+  Файлы сертификатов (russian_trusted_root_ca.crt, russian_trusted_sub_ca.crt) НЕ входят
+  в архив — их нужно скачать отдельно и положить в app/src/main/res/raw/, иначе сборка
+  упадёт с ошибкой "resource not found". См. docs/NEXT-STEPS.md, раздел про сертификат
+  Минцифры, там же — точные команды для скачивания.
+
+  FusionBrain (Kandinsky, api-key.fusionbrain.ai) в этой настройке не нуждается — обычный
+  коммерческий сертификат, уже есть в системном хранилище.
+-->
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">gigachat.devices.sberbank.ru</domain>
+        <domain includeSubdomains="true">ngw.devices.sberbank.ru</domain>
+        <trust-anchors>
+            <certificates src="@raw/russian_trusted_root_ca" />
+            <certificates src="@raw/russian_trusted_sub_ca" />
+            <certificates src="@system" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

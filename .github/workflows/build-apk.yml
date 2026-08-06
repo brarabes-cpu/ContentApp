@@ -31,9 +31,9 @@ jobs:
         with:
           gradle-version: '8.7'
 
-      - name: Создать local.properties (GEMINI_API_KEY из секретов репозитория)
+      - name: Создать local.properties (ключ GigaChat из секрета репозитория)
         run: |
-          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > local.properties
+          echo "GIGACHAT_AUTH_KEY=${{ secrets.GIGACHAT_AUTH_KEY }}" > local.properties
 
       - name: Собрать debug APK
         run: gradle assembleDebug --stacktrace

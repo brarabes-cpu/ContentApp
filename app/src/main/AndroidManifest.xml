@@ -11,6 +11,7 @@
         android:label="ContentApp"
         android:icon="@mipmap/ic_launcher"
         android:theme="@style/Theme.ContentApp"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true">
 
         <activity

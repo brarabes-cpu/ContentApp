@@ -14,9 +14,12 @@ Android-приложение (Kotlin + Jetpack Compose): пользовател�
 ## 1. Обзор
 
 Пользователь вводит короткую фразу ("собачка на траве"), приложение
-разворачивает её в детализированный промт через Gemini API, показывает
-подтверждение и генерирует изображение той же моделью Gemini. Единственная
-модель на всех — без вариаций по качеству, без водяного знака.
+разворачивает её в детализированный промт через GigaChat API (Сбер), показывает
+подтверждение и генерирует изображение через встроенную функцию text2image того
+же GigaChat API. Один провайдер на обе задачи, работает из РФ без VPN и без
+зарубежной карты (см. `docs/DECISIONS.md` — изначально использовался Gemini, но
+он заблокирован для российских IP на уровне API; для P4 также пробовались
+Kandinsky/FusionBrain и YandexART, но не подошли по надёжности/требованию карты).
 
 ---
 
@@ -35,13 +38,12 @@ ContentApp/
 │       │   ├── navigation/
 │       │   │   └── AppNavigation.kt             — граф экранов (main -> result), состояние приложения
 │       │   ├── ai/
-│       │   │   ├── PromptExpansionService.kt        — интерфейс P1
-│       │   │   ├── GeminiPromptExpansionService.kt   — реализация через Gemini API
-│       │   │   └── PromptExpansionResult.kt          — Success/Failed
+│       │   │   ├── PromptExpansionService.kt          — интерфейс P1
+│       │   │   ├── GigaChatPromptExpansionService.kt   — реализация через GigaChat API (Сбер)
+│       │   │   └── PromptExpansionResult.kt            — Success/Failed
 │       │   ├── content/
 │       │   │   ├── ImageGenerationService.kt              — интерфейс P4
-│       │   │   ├── BaseGeminiImageGenerationService.kt    — общая логика вызова Gemini
-│       │   │   ├── GeminiFlashImageGenerationService.kt   — единственная реализация (gemini-2.5-flash-image)
+│       │   │   ├── GigaChatImageGenerationService.kt        — реализация через text2image GigaChat API
 │       │   │   ├── ImageGenerationResult.kt                — Success/Failed
 │       │   │   └── ImageSaver.kt                            — сохранение в галерею (MediaStore)
 │       │   └── ui/
@@ -80,15 +82,20 @@ ContentApp/
 
 ### 3.3. Разворачивание промта (P1) и генерация изображения (P4)
 
-Обе стадии используют один и тот же `GEMINI_API_KEY` из `local.properties`.
+Два разных российских провайдера (Сбер), с разной авторизацией — намеренно не
+унифицированы под одну абстракцию (см. `docs/DECISIONS.md`).
 
-- **P1** — `GeminiPromptExpansionService` вызывает Gemini (`gemini-2.5-flash`)
-  с текстом (и фото, если приложено), возвращает развёрнутый промт для блока
-  "Я правильно поняла?" (`S1.C1`).
-- **P4** — `GeminiFlashImageGenerationService` (наследник
-  `BaseGeminiImageGenerationService`) вызывает Gemini
-  (`gemini-2.5-flash-image`, "Nano Banana") с зафиксированным промтом,
-  возвращает байты изображения напрямую — без постобработки.
+- **P1** — `GigaChatPromptExpansionService` вызывает GigaChat API (OAuth2,
+  `GIGACHAT_AUTH_KEY` из `local.properties`, access-токен на 30 минут кешируется
+  и обновляется автоматически) с текстом (и фото, если приложено — через отдельный
+  эндпоинт `/files`), возвращает развёрнутый промт для блока "Я правильно
+  поняла?" (`S1.C1`). Требует доверенный сертификат НУЦ Минцифры
+  (`res/xml/network_security_config.xml`).
+- **P4** — `GigaChatImageGenerationService` вызывает тот же `/chat/completions`,
+  что и P1, но с `"function_call": "auto"` и промтом со словом "нарисуй" — модель
+  сама вызывает встроенную функцию `text2image`. Ответ содержит `<img src="file_id">`
+  внутри текста, откуда парсится id, дальше отдельным запросом
+  `/files/{file_id}/content` скачивается сама картинка.
 
 ---
 
@@ -123,13 +130,16 @@ ContentApp/
 
 ### Реализовано
 - Полный UI-каркас двух экранов на Jetpack Compose (S1, S2).
-- Разворачивание промта через Gemini API (P1), с учётом приложенного фото.
-- Генерация изображения через Gemini API (P4).
+- Разворачивание промта через GigaChat API (P1), с учётом приложенного фото.
+- Генерация изображения через встроенную функцию text2image GigaChat API (P4).
 - Сохранение результата в галерею через `MediaStore` (`ImageSaver.kt`).
 - Единая цветовая палитра и типографика (`ui/theme/`).
 
 ### Открытые вопросы (см. `docs/NEXT-STEPS.md`)
-- Точный дневной лимит бесплатного тарифа Gemini — уточнить в консоли.
+- Сертификаты НУЦ Минцифры нужно скачать и положить в проект отдельно —
+  не входят в архив.
+- Точный размер бесплатного тарифа GigaChat по факту использования (единый лимит
+  на P1 и P4, т.к. это один и тот же аккаунт) — уточнить в личном кабинете.
 - Дальнейшая доработка экранов и API — по ходу обсуждения в чате.
 
 ---
@@ -140,9 +150,11 @@ ContentApp/
 2. Android Studio → **File → Open** → выбрать папку `ContentApp` (где лежит
    `settings.gradle.kts`).
 3. Скопировать `local.properties.example` в `local.properties`, вписать
-   `GEMINI_API_KEY`.
-4. Дождаться Gradle sync (нужен интернет для загрузки зависимостей).
-5. Запустить на эмуляторе/устройстве.
+   `GIGACHAT_AUTH_KEY` (единственный ключ, используется и для P1, и для P4).
+4. Скачать сертификаты НУЦ Минцифры в `app/src/main/res/raw/` (см.
+   `docs/NEXT-STEPS.md`, иначе сборка упадёт).
+5. Дождаться Gradle sync (нужен интернет для загрузки зависимостей).
+6. Запустить на эмуляторе/устройстве.
 
 Требования: Android Studio Koala или новее, JDK 17.
 

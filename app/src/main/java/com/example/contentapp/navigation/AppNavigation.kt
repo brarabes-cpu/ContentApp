@@ -9,9 +9,9 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.contentapp.ai.GeminiPromptExpansionService
+import com.example.contentapp.ai.GigaChatPromptExpansionService
 import com.example.contentapp.ai.PromptExpansionService
-import com.example.contentapp.content.GeminiFlashImageGenerationService
+import com.example.contentapp.content.GigaChatImageGenerationService
 import com.example.contentapp.content.ImageGenerationResult
 import com.example.contentapp.content.ImageGenerationService
 import com.example.contentapp.content.ImageSaver
@@ -31,11 +31,13 @@ fun AppNavigation() {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
-    // Единственная реализация P1 на сегодня — Gemini API (бесплатный тариф, текст + фото на входе).
-    // MainScreen работает через интерфейс PromptExpansionService и не знает, какая это модель.
-    val promptExpansionService: PromptExpansionService = remember { GeminiPromptExpansionService() }
-    // Единственная модель генерации изображения в v1 (см. content/GeminiFlashImageGenerationService.kt).
-    val imageGenerationService: ImageGenerationService = remember { GeminiFlashImageGenerationService() }
+    // Единственная реализация P1 на сегодня — GigaChat API (работает из России без VPN,
+    // в отличие от Gemini). MainScreen работает через интерфейс PromptExpansionService
+    // и не знает, какая это модель.
+    val promptExpansionService: PromptExpansionService = remember { GigaChatPromptExpansionService() }
+    // P4 тоже через GigaChat (встроенная функция text2image) — тот же ключ/токен, что и P1,
+    // см. content/GigaChatImageGenerationService.kt.
+    val imageGenerationService: ImageGenerationService = remember { GigaChatImageGenerationService() }
 
     var isLoading by remember { mutableStateOf(false) }
     var resultImageBytes by remember { mutableStateOf<ByteArray?>(null) }

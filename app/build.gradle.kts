@@ -5,8 +5,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-// Читаем local.properties — файл НЕ коммитится в git (см. .gitignore), там лежит
-// GEMINI_API_KEY, чтобы ключ не попал в код/репозиторий.
+// Читаем local.properties — файл НЕ коммитится в git (см. .gitignore), там лежат
+// ключи GigaChat/YandexART, чтобы они не попали в код/репозиторий.
 val localProperties = Properties().apply {
     val file = rootProject.file("local.properties")
     if (file.exists()) load(file.inputStream())
@@ -23,9 +23,9 @@ android {
         versionCode = 1
         versionName = "0.1"
 
-        // Пусто, если ключ не задан в local.properties — тогда GeminiPromptExpansionService
-        // вернёт понятную ошибку вместо непонятного 401 от API.
-        buildConfigField("String", "GEMINI_API_KEY", "\"${localProperties.getProperty("GEMINI_API_KEY", "")}\"")
+        // Пусто, если ключи не заданы в local.properties — тогда сервисы вернут понятную
+        // ошибку вместо непонятного 401/403 от API.
+        buildConfigField("String", "GIGACHAT_AUTH_KEY", "\"${localProperties.getProperty("GIGACHAT_AUTH_KEY", "")}\"")
     }
 
     buildFeatures {
@@ -56,12 +56,16 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
- implementation("androidx.compose.material:material-icons-extended")
+    // Расширенный набор Material-иконок — базовый набор (входит в material3) не
+    // содержит Icons.Filled.AttachFile (кнопка-скрепка на S1.B1), версия берётся
+    // из compose-bom выше, поэтому без явного номера.
+    implementation("androidx.compose.material:material-icons-extended")
 
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
-    // HTTP-клиент для вызова ИИ-API (разворачивание промта и генерация изображения,
-    // см. ai/GeminiPromptExpansionService.kt, content/BaseGeminiImageGenerationService.kt)
+    // HTTP-клиент для вызова GigaChat API (разворачивание промта — P1, встроенная функция
+    // text2image — P4; см. ai/GigaChatPromptExpansionService.kt, ai/GigaChatAuth.kt,
+    // content/GigaChatImageGenerationService.kt)
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     debugImplementation("androidx.compose.ui:ui-tooling")

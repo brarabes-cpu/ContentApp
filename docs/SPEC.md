@@ -50,9 +50,9 @@
 
 | ID | Что запускает | Кратко |
 |---|---|---|
-| P1 | S1.B2 | Разворачивание короткой фразы в полный промт через Gemini API (текст + фото) |
+| P1 | S1.B2 | Разворачивание короткой фразы в полный промт через GigaChat API (текст + фото) |
 | P3 | S1.B1 / S1.B8 | Прикрепление/замена фото через системный Photo Picker, S1.B8 — убрать фото |
-| P4 | S1.B3 / S1.B4 | Фиксация промта, переход на S2 + генерация изображения (Gemini Flash, бесплатно) |
+| P4 | S1.B3 / S1.B4 | Фиксация промта, переход на S2 + генерация изображения (GigaChat text2image, бесплатно) |
 | P12 | S2.B1 | Сохранение результата в галерею через MediaStore |
 
 ---
@@ -102,8 +102,8 @@ S1.B2.onclick() --> S1.C1.open()
        * shortPrompt — переменная экрана S1: текст, который пользователь ввёл в поле S1.F1.
        * selectedPhotoUri — если не null, фото читается в photoBytes и уходит вместе с текстом.
        * onExpandPrompt — суспенд-колбэк, переданный из AppNavigation.kt; реально вызывает
-       *                   PromptExpansionService.kt_expandPrompt() -> GeminiPromptExpansionService.kt
-       *                   (Gemini API, gemini-2.5-flash, бесплатный тариф).
+       *                   PromptExpansionService.kt_expandPrompt() -> GigaChatPromptExpansionService.kt
+       *                   (GigaChat API, Сбер, бесплатный тариф, работает из России без VPN).
        * isExpanding — переменная экрана S1: пока true, поверх экрана показан LoadingOverlay (O1).
        * expandedPrompt — переменная экрана S1: развёрнутый промт из PromptExpansionResult.Success;
        *                   как только не пустая, на экране появляется блок S1.C1.
@@ -125,9 +125,9 @@ S1.B3.onclick() --> S2.open()
        * prompt — текст, который отправляется на генерацию; для S1.B3 это shortPrompt.
        * lastPrompt — переменная состояния AppNavigation: хранит текущий промт для показа на S2.
        * isLoading — пока true, на S2 поверх экрана LoadingOverlay (O1).
-       * imageGenerationService — единственная реализация в v1, GeminiFlashImageGenerationService.kt
-       *                            ("Nano Banana", бесплатно), через общий
-       *                            BaseGeminiImageGenerationService.kt.
+       * imageGenerationService — единственная реализация в v1, GigaChatImageGenerationService.kt
+       *                            (встроенная функция text2image GigaChat API, тот же ключ,
+       *                            что и у P1, см. ai/GigaChatAuth.kt).
        * resultImageBytes / contentErrorMessage — результат генерации, показывается на S2.C1.
        */
       lastPrompt = prompt; resultImageBytes = null; contentErrorMessage = null; isLoading = true

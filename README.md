@@ -12,10 +12,14 @@ Android-приложение (Kotlin + Jetpack Compose): пользовател�
 
 1. Скачайте и распакуйте архив.
 2. Android Studio → **File → Open** → выберите папку `ContentApp` (ту, где лежит `settings.gradle.kts`).
-3. Дождитесь Gradle sync (первый раз скачает зависимости — нужен интернет).
-4. Скопируйте `local.properties.example` в `local.properties` и впишите свой
-   `GEMINI_API_KEY` (см. комментарии в файле).
-5. Запустите на эмуляторе или устройстве (Shift+F10 / кнопка Run).
+3. Скачайте сертификаты НУЦ Минцифры в `app/src/main/res/raw/` (нужны для
+   GigaChat API) — команды в [`docs/NEXT-STEPS.md`](docs/NEXT-STEPS.md), без них
+   сборка упадёт.
+4. Скопируйте `local.properties.example` в `local.properties` и впишите
+   `GIGACHAT_AUTH_KEY` — единственный ключ, используется и для P1, и для P4 (см.
+   комментарии в файле, где его получить).
+5. Дождитесь Gradle sync (первый раз скачает зависимости — нужен интернет).
+6. Запустите на эмуляторе или устройстве (Shift+F10 / кнопка Run).
 
 Требования: Android Studio Koala или новее, JDK 17.
 
@@ -25,12 +29,15 @@ Android-приложение (Kotlin + Jetpack Compose): пользовател�
 debug APK на GitHub без локальной установки Android Studio/SDK.
 
 1. Загрузить эту папку как репозиторий на GitHub (или добавить в существующий).
-2. В репозитории: **Settings → Secrets and variables → Actions → New repository
-   secret**, имя `GEMINI_API_KEY`, значение — свой ключ (иначе соберётся, но
-   без рабочего вызова Gemini API).
-3. Вкладка **Actions** → workflow "Build debug APK" → **Run workflow**
+2. Скачать сертификаты НУЦ Минцифры в `app/src/main/res/raw/` (см.
+   [`docs/NEXT-STEPS.md`](docs/NEXT-STEPS.md)) — без них сборка упадёт, даже
+   если ключи заданы верно.
+3. В репозитории: **Settings → Secrets and variables → Actions → New repository
+   secret** — добавить `GIGACHAT_AUTH_KEY` (иначе соберётся, но без рабочего
+   вызова API).
+4. Вкладка **Actions** → workflow "Build debug APK" → **Run workflow**
    (или просто запушить в ветку `main` — сработает автоматически).
-4. После завершения сборки APK будет в артефактах запуска (**Actions** →
+5. После завершения сборки APK будет в артефактах запуска (**Actions** →
    конкретный run → **Artifacts** → `ContentApp-debug-apk`) — скачать и
    установить на устройство (нужно разрешить установку из неизвестных
    источников).
@@ -58,8 +65,8 @@ Gradle и Android SDK сам через официальные экшены, н�
 app/src/main/java/com/example/contentapp/
 ├── MainActivity.kt              — точка входа
 ├── navigation/AppNavigation.kt  — состояние приложения, граф экранов (main -> result)
-├── ai/                          — разворачивание промта (Gemini API, P1)
-├── content/                     — генерация изображения (Gemini Flash, P4), сохранение в галерею
+├── ai/                          — разворачивание промта (GigaChat API, P1)
+├── content/                     — генерация изображения (GigaChat text2image, P4), сохранение в галерею
 └── ui/
     ├── theme/                   — цвета, шрифты, тема
     └── screens/                 — AppNameBanner (S1.T0), MainScreen, ResultScreen, LoadingOverlay
