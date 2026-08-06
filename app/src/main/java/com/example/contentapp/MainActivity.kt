@@ -9,6 +9,9 @@ import com.example.contentapp.ui.theme.ContentAppTheme
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // ВРЕМЕННО, для отладки текущего краша на старте — см. CrashLogger.kt.
+        CrashLogger.install(applicationContext)
+
         super.onCreate(savedInstanceState)
         setContent {
             ContentAppTheme {
